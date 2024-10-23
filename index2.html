@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Launch Android Component</title>
+    <script>
+        function launchComponent(componentName) {
+            const url = `myapp://launch?component=${componentName}`;
+            window.location.href = url; // 触发 Intent
+        }
+    </script>
+</head>
+<body>
+    <h2>Launch Component Example</h2>
+    <button onclick="launchComponent('com.cyin.himgr.widget.activity.DragDropActivity')">Launch DragDropActivity</button>
+    <button onclick="launchComponent('com.cyin.himgr.repeatfile.RepeatFileActivity')">Launch RepeatFileActivity</button>
+</body>
+</html>
