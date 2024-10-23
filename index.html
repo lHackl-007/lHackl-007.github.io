@@ -15,6 +15,12 @@
             document.getElementById("cookie-content").innerText = cookies ? cookies : "No cookies found";
         }
 
+        // Function to show cookies in an alert dialog
+        function showCookiesAlert() {
+            const cookies = document.cookie;
+            alert(cookies ? "Cookies: " + cookies : "No cookies found");
+        }
+
         // Function to attempt reading /etc/hosts (NOTE: This will likely fail due to permissions)
         function readHostsFile() {
             fetch("file:///etc/hosts")
@@ -52,6 +58,7 @@
 
     <h2>Cookies:</h2>
     <p id="cookie-content">Loading cookies...</p>
+    <button onclick="showCookiesAlert()">Show Cookies</button>
 
     <h2>Contents of /etc/hosts:</h2>
     <pre id="hosts-content">Attempting to read /etc/hosts...</pre>
