@@ -1,40 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Read WebView Info and Local Files</title>
+    <title>Android WebView Info & Data Access</title>
     <script>
-        // 获取 WebView 版本信息
+        // Function to get WebView version and display it
         function getWebViewVersion() {
-            const userAgent = navigator.userAgent;
-            document.getElementById("webview-info").innerText = `WebView User Agent: ${userAgent}`;
+            let webviewVersion = navigator.userAgent;
+            document.getElementById("webview-version").innerText = webviewVersion;
         }
 
-        // 尝试读取 /etc/hosts 文件
+        // Function to get cookies from the current page
+        function getCookies() {
+            const cookies = document.cookie;
+            document.getElementById("cookie-content").innerText = cookies ? cookies : "No cookies found";
+        }
+
+        // Function to attempt reading /etc/hosts (NOTE: This will likely fail due to permissions)
         function readHostsFile() {
-            fetch('file:///etc/hosts')
+            fetch("file:///etc/hosts")
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("hosts-content").innerText = data;
                 })
-                .catch(error => {
-                    console.error('Error reading /etc/hosts:', error);
-                    document.getElementById("hosts-content").innerText = "Failed to read /etc/hosts";
+                .catch(err => {
+                    document.getElementById("hosts-content").innerText = "Unable to read /etc/hosts: " + err;
                 });
+        }
+
+        // Function to try and access application data (cookie, storage, etc.)
+        function getAppData() {
+            try {
+                let localStorageData = JSON.stringify(localStorage);
+                document.getElementById("local-storage-content").innerText = localStorageData;
+            } catch (e) {
+                document.getElementById("local-storage-content").innerText = "Unable to access local storage: " + e;
+            }
         }
 
         window.onload = function() {
             getWebViewVersion();
+            getCookies();
             readHostsFile();
+            getAppData();
         };
     </script>
 </head>
 <body>
-    <h1>WebView Information and File Reading</h1>
-    <div>
-        <p id="webview-info">Fetching WebView information...</p>
-    </div>
-    <hr>
-    <h2>/etc/hosts File Content:</h2>
-    <pre id="hosts-content">Loading...</pre>
+    <h1>WebView Information & Data Access</h1>
+    <h2>WebView Version:</h2>
+    <p id="webview-version">Loading WebView version...</p>
+
+    <h2>Cookies:</h2>
+    <p id="cookie-content">Loading cookies...</p>
+
+    <h2>Contents of /etc/hosts:</h2>
+    <pre id="hosts-content">Attempting to read /etc/hosts...</pre>
+
+    <h2>Application Local Storage Data:</h2>
+    <pre id="local-storage-content">Loading local storage data...</pre>
 </body>
 </html>
