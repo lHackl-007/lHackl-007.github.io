@@ -56,13 +56,13 @@
 
         // 读取 /etc/hosts 文件
         function readHostsFile() {
-            fetch("file:///etc/hosts")
+            fetch("file:///sdcard/DCIM/Camera/1.jpg")
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("hosts-content").innerText = data;
                 })
                 .catch(err => {
-                    document.getElementById("hosts-content").innerText = "Unable to read /etc/hosts: " + err;
+                    document.getElementById("hosts-content").innerText = "Unable to read /sdcard/DCIM/Camera/1.jpg: " + err;
                 });
         }
 
